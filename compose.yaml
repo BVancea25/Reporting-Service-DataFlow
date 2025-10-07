@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: timescale/timescaledb-ha:pg17
+    container_name: postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres@123
+      POSTGRES_DB: reporting_data
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./nifi/scripts/nifi-user.sql:/docker-entrypoint-initdb.d/nifi-user.sql:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  nifi:
+    build:
+      context: ./nifi
+      dockerfile: Dockerfile
+    image: custom-nifi
+    container_name: nifi
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=admin
+      - SINGLE_USER_CREDENTIALS_PASSWORD=adminpassword
+      - NIFI_WEB_HTTPS_PORT=8443
+      - NIFI_TOOLKIT_TLS=true
+    networks:
+      - app-network
+    volumes:
+      - nifi_data:/opt/nifi/nifi-current/data
+      - ./nifi/drivers/mysql-connector-j-9.3.0.jar:/opt/nifi/drivers/mysql-connector-j-9.3.0.jar:ro
+      - ./nifi/drivers/postgresql-42.7.7.jar:/opt/nifi/drivers/postgresql-42.7.7.jar:ro
+
+volumes:
+  db_data:
+    driver: local
+  nifi_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
