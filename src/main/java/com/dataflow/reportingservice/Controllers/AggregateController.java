@@ -20,8 +20,8 @@ public class AggregateController {
         this.service = service;
     }
 
-    @GetMapping("/daily")
-    public List<FactDailyAggregateDto> getDailyAggregate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return service.getDailyAggregate(date);
-    }
+//    @GetMapping("/daily")
+//    public List<FactDailyAggregateDto> getDailyAggregate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+//        return service.getDailyAggregate(date);
+//    }
 }

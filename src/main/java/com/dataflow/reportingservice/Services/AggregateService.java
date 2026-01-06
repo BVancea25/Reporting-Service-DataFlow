@@ -15,7 +15,7 @@ public class AggregateService {
         this.repository = repository;
     }
 
-    public List<FactDailyAggregateDto> getDailyAggregate(LocalDate date) {
-        return repository.findByDate(date);
-    }
+//    public List<FactDailyAggregateDto> getDailyAggregate(LocalDate date) {
+//        return repository.findByDate(date);
+//    }
 }

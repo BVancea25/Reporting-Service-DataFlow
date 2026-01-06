@@ -6,7 +6,6 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "fact_transactions",
@@ -26,7 +25,7 @@ public class FactTransaction {
     @Column(name = "user_id", nullable = false)
     private String userId;
 
-    @Column(name = "date_key", nullable = false)
+    @Column(name = "date_key", nullable = true)
     private LocalDate dateKey;
 
     @Column(name = "category", nullable = false, length = 100)
@@ -41,7 +40,6 @@ public class FactTransaction {
     @Column(name = "payment_mode", length = 50)
     private String paymentMode;
 
-    @Id
     @Column(name = "transaction_date", nullable = false)
     private LocalDateTime transaction_date;
 
