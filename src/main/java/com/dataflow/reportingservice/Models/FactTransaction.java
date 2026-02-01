@@ -1,5 +1,6 @@
 package com.dataflow.reportingservice.Models;
 
+import com.dataflow.reportingservice.Utils.Constants.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,8 +11,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "fact_transactions",
         indexes = {
-                @Index(name = "idx_ft_user_date", columnList = "user_id, date_key"),
-                @Index(name = "idx_ft_date_cat",  columnList = "date_key, category")
+                @Index(name = "idx_ft_user_date_currency", columnList = "user_id, date_key, currency_code"),
+                @Index(name = "idx_category",  columnList = "category"),
+                @Index(name = "idx_payment_method", columnList = "payment_mode")
         })
 @Data
 @NoArgsConstructor
@@ -43,5 +45,15 @@ public class FactTransaction {
     @Column(name = "transaction_date", nullable = false)
     private LocalDateTime transaction_date;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="type", nullable = false)
+    private TransactionType type = TransactionType.INCOME;
+
+    @PrePersist
+    public void prePersist() {
+        if (type == null) {
+            type = TransactionType.INCOME;
+        }
+    }
 
 }
